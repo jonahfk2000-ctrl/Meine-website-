@@ -34,14 +34,53 @@
     </section>
 
     <!-- ===== Bereich 2: Meine Hobbys ===== -->
-    <!-- Ersetze die Platzhalter durch deine eigenen Hobbys.
-         Für ein weiteres Hobby kopierst du einfach eine <li>-Zeile. -->
+    <!-- Jedes Hobby besteht aus zwei Teilen:
+         1. einer Karte (Bild mit Namen darauf), auf die man klickt
+         2. einem Fenster (popover) mit Bild und Info-Text
+         Die Karte öffnet das Fenster über popovertarget="..." –
+         dieser Wert muss genau zur id="..." des Fensters passen.
+
+         Neues Hobby hinzufügen:
+         - eine Karte und ein Fenster kopieren
+         - die id (z. B. "hobby-schwimmen") an beiden Stellen anpassen
+           (auch beim ✕-Knopf)
+         - Bild, Namen und Text ändern -->
     <section id="hobbys">
       <h2>Meine Hobbys</h2>
-      <ul class="hobby-liste">
-        <li>Rudern</li>
-        <li>Wandern</li>
-      </ul>
+
+      <!-- Die Karten -->
+      <div class="hobby-liste">
+        <button class="hobby-karte" popovertarget="hobby-rudern">
+          <img src="bilder/rudern.jpg" alt="Foto vom Rudern">
+          <span class="hobby-name">Rudern</span>
+        </button>
+
+        <button class="hobby-karte" popovertarget="hobby-wandern">
+          <img src="bilder/wandern.jpg" alt="Foto vom Wandern">
+          <span class="hobby-name">Wandern</span>
+        </button>
+      </div>
+
+      <!-- Die Fenster -->
+      <div id="hobby-rudern" class="hobby-fenster" popover>
+        <button class="schliessen" popovertarget="hobby-rudern" popovertargetaction="hide" aria-label="Fenster schließen">✕</button>
+        <img src="bilder/rudern.jpg" alt="Foto vom Rudern">
+        <div class="hobby-text">
+          <h3>Rudern</h3>
+          <p>Beim Rudern wird ein Boot mit Riemen oder Skulls über das Wasser bewegt – und zwar rückwärts, mit dem Blick zum Heck. Man kann allein im Einer rudern oder im Team bis hin zum Achter. Dabei arbeiten fast alle Muskeln mit, die meiste Kraft kommt aus den Beinen.</p>
+          <p>Das Besondere ist der gemeinsame Rhythmus: Nur wenn alle im gleichen Takt ziehen, gleitet das Boot ruhig und schnell. Dazu kommt das Gefühl, früh morgens über stilles Wasser zu fahren.</p>
+        </div>
+      </div>
+
+      <div id="hobby-wandern" class="hobby-fenster" popover>
+        <button class="schliessen" popovertarget="hobby-wandern" popovertargetaction="hide" aria-label="Fenster schließen">✕</button>
+        <img src="bilder/wandern.jpg" alt="Foto vom Wandern">
+        <div class="hobby-text">
+          <h3>Wandern</h3>
+          <p>Beim Wandern ist man zu Fuß in der Natur unterwegs – vom gemütlichen Weg durch den Wald bis zur mehrtägigen Tour in den Bergen. Man braucht kaum Ausrüstung: gute Schuhe, etwas zu trinken und los geht's.</p>
+          <p>Das Besondere ist das langsame Tempo: Man sieht mehr, kommt zur Ruhe und erarbeitet sich jede Aussicht selbst. Mit anderen zusammen wird aus einer Wanderung schnell ein kleines Abenteuer.</p>
+        </div>
+      </div>
     </section>
 
     <!-- ===== Bereich 3: Kontakt ===== -->
