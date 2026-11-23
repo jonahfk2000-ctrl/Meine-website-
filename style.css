@@ -1,14 +1,50 @@
 /* =========================================
-   Farben – hier kannst du das Design ändern.
-   Eine Änderung gilt für die ganze Seite.
+   Farbkonzept „Wald & Erde“
+   Hier kannst du das Design ändern – eine Änderung
+   gilt für die ganze Seite.
    ========================================= */
+
+/* --- Heller Modus (Standard) --- */
 :root {
-  --hintergrund: #121212;   /* Seitenhintergrund */
-  --flaeche: #1e1e1e;       /* Hintergrund von Navigation und Karten */
-  --text: #e6e6e6;          /* normale Schrift */
-  --text-leise: #9a9a9a;    /* weniger wichtige Schrift */
-  --akzent: #7aa2f7;        /* Links und Hervorhebungen */
-  --rand: #2c2c2c;          /* feine Trennlinien */
+  --hintergrund: #F3EEE4;   /* Creme */
+  --flaeche: #E8E0D0;       /* Sand: Navigation, Fenster */
+  --text: #2E2A24;          /* Dunkelbraun */
+  --text-leise: #6B6358;    /* Rinde */
+  --akzent: #4A6A3B;        /* Moos: Überschriften, Links */
+  --akzent-2: #94502C;      /* Terrakotta: Hover, Details */
+  --rand: #D8CDB8;          /* feine Linien */
+  --schatten: 0 8px 24px rgba(74, 58, 36, 0.12);
+
+  color-scheme: light;
+}
+
+/* --- Dunkler Modus (über den Schalter) --- */
+:root[data-theme="dark"] {
+  --hintergrund: #171C17;   /* Waldgrün */
+  --flaeche: #212821;       /* Moosschatten */
+  --text: #E9E3D6;          /* Leinen */
+  --text-leise: #A8AE9F;    /* Salbeigrau */
+  --akzent: #9DB68A;        /* Salbei */
+  --akzent-2: #D68A63;      /* Terrakotta hell */
+  --rand: #2F382F;
+  --schatten: 0 8px 24px rgba(0, 0, 0, 0.35);
+
+  color-scheme: dark;
+}
+
+/* --- Rückfall ohne JavaScript: Geräte-Einstellung verwenden --- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --hintergrund: #171C17;
+    --flaeche: #212821;
+    --text: #E9E3D6;
+    --text-leise: #A8AE9F;
+    --akzent: #9DB68A;
+    --akzent-2: #D68A63;
+    --rand: #2F382F;
+    --schatten: 0 8px 24px rgba(0, 0, 0, 0.35);
+    color-scheme: dark;
+  }
 }
 
 /* ===== Grundeinstellungen ===== */
@@ -26,39 +62,55 @@ body {
   color: var(--text);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;  /* sanfter Wechsel Hell/Dunkel */
+}
+
+/* Überschriften in einer Serifenschrift – wirkt natürlicher */
+h1, h2, h3, .logo {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
 }
 
 a {
   color: var(--akzent);
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 a:hover {
-  text-decoration: underline;
+  color: var(--akzent-2);
 }
 
 /* ===== Navigation (bleibt oben sichtbar) ===== */
 header {
   position: sticky;
   top: 0;
+  z-index: 10;
   background: var(--flaeche);
   border-bottom: 1px solid var(--rand);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 nav {
   max-width: 800px;
   margin: 0 auto;
-  padding: 1rem 1.25rem;
+  padding: 0.85rem 1.25rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.5rem 1rem;
 }
 
 nav .logo {
   color: var(--text);
+  font-size: 1.2rem;
   font-weight: bold;
+}
+
+.nav-rechts {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 nav ul {
@@ -74,7 +126,82 @@ nav ul a {
 }
 
 nav ul a:hover {
-  color: var(--akzent);
+  color: var(--akzent-2);
+}
+
+/* ===== Schalter Hell/Dunkel (Apple-Stil) ===== */
+.schalter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+/* Ohne JavaScript kann der Schalter nichts tun – dann ausblenden */
+:root:not([data-theme]) .schalter {
+  display: none;
+}
+
+.schalter-icon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--text-leise);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Das echte Kontrollkästchen: unsichtbar, aber über der Schiene klickbar */
+.schalter input {
+  position: absolute;
+  opacity: 0;
+  width: 51px;
+  height: 31px;
+  margin: 0;
+  left: calc(16px + 0.4rem);
+  cursor: pointer;
+}
+
+/* Die Schiene */
+.schiene {
+  position: relative;
+  width: 51px;
+  height: 31px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--rand);
+  transition: background-color 0.25s ease;
+}
+
+/* Der runde weiße Knopf */
+.schiene::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), 0 0 1px rgba(0, 0, 0, 0.2);
+  transition: transform 0.25s cubic-bezier(0.3, 1.3, 0.6, 1);
+}
+
+/* Eingeschaltet (dunkel): Schiene grün, Knopf rechts */
+.schalter input:checked + .schiene {
+  background: var(--akzent);
+}
+
+.schalter input:checked + .schiene::after {
+  transform: translateX(20px);
+}
+
+/* Fokus-Rahmen für die Bedienung mit der Tastatur */
+.schalter input:focus-visible + .schiene {
+  outline: 2px solid var(--akzent-2);
+  outline-offset: 2px;
 }
 
 /* ===== Inhaltsbereiche ===== */
@@ -95,13 +222,14 @@ section:last-child {
 }
 
 h1 {
-  font-size: 2.25rem;
+  font-size: 2.4rem;
+  line-height: 1.2;
   margin: 0 0 1.5rem;
 }
 
 h2 {
   color: var(--akzent);
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   margin: 0 0 1rem;
 }
 
@@ -109,17 +237,18 @@ h2 {
 .hobby-liste {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .hobby-karte {
   position: relative;       /* damit der Name über dem Bild liegen kann */
   aspect-ratio: 4 / 3;
   padding: 0;
-  border: 1px solid var(--rand);
-  border-radius: 8px;
+  border: none;
+  border-radius: 16px;
   overflow: hidden;
   background: var(--flaeche);
+  box-shadow: var(--schatten);
   cursor: pointer;
   font: inherit;
 }
@@ -129,7 +258,7 @@ h2 {
   height: 100%;
   object-fit: cover;        /* Bild füllt die Karte, ohne verzerrt zu werden */
   display: block;
-  transition: transform 0.3s ease;
+  transition: transform 0.4s ease;
 }
 
 .hobby-karte:hover img {
@@ -137,8 +266,8 @@ h2 {
 }
 
 .hobby-karte:focus-visible {
-  outline: 2px solid var(--akzent);
-  outline-offset: 2px;
+  outline: 3px solid var(--akzent-2);
+  outline-offset: 3px;
 }
 
 /* Der halbtransparente Name auf dem Bild */
@@ -162,16 +291,18 @@ h2 {
   width: min(600px, calc(100% - 2rem));
   max-height: calc(100% - 2rem);
   padding: 0;
-  border: 1px solid var(--rand);
-  border-radius: 12px;
-  background: var(--flaeche);
+  border: none;
+  border-radius: 20px;
+  background: var(--hintergrund);
   color: var(--text);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
   overflow-y: auto;         /* bei wenig Platz kann man im Fenster scrollen */
 }
 
 /* abgedunkelter Hintergrund hinter dem Fenster */
 .hobby-fenster::backdrop {
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(20, 24, 18, 0.65);
+  backdrop-filter: blur(3px);
 }
 
 .hobby-fenster img {
@@ -187,7 +318,7 @@ h2 {
 
 .hobby-text h3 {
   color: var(--akzent);
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   margin: 0 0 0.75rem;
 }
 
@@ -195,7 +326,7 @@ h2 {
   margin: 0 0 0.75rem;
 }
 
-/* Schließen-Knopf oben rechts */
+/* Schließen-Knopf oben rechts (liegt auf dem Foto, daher immer dunkel) */
 .schliessen {
   position: absolute;
   top: 0.75rem;
@@ -204,7 +335,7 @@ h2 {
   height: 2.25rem;
   border: none;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.55);
   color: #fff;
   font-size: 1.1rem;
   cursor: pointer;
@@ -212,8 +343,8 @@ h2 {
 
 .schliessen:hover,
 .schliessen:focus-visible {
-  background: rgba(0, 0, 0, 0.85);
-  outline: 2px solid var(--akzent);
+  background: rgba(0, 0, 0, 0.8);
+  outline: 2px solid var(--akzent-2);
 }
 
 /* ===== Fußzeile ===== */
@@ -228,7 +359,12 @@ footer {
 /* ===== Anpassungen für kleine Bildschirme (Handy) ===== */
 @media (max-width: 500px) {
   h1 {
-    font-size: 1.75rem;
+    font-size: 1.9rem;
+  }
+
+  .nav-rechts {
+    width: 100%;
+    justify-content: space-between;
   }
 
   nav ul {
