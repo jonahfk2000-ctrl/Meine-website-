@@ -12,6 +12,9 @@
   <!-- Hell/Dunkel-Modus: wird früh geladen, damit die Seite
        nicht kurz in der falschen Farbe aufblitzt -->
   <script src="theme.js"></script>
+
+  <!-- Terminbuchung (Kalender + Formular) -->
+  <script src="termine.js" defer></script>
 </head>
 <body>
 
@@ -23,6 +26,7 @@
         <ul>
           <li><a href="#ueber-mich">Über mich</a></li>
           <li><a href="#hobbys">Meine Hobbys</a></li>
+          <li><a href="#termine">Termine</a></li>
         </ul>
 
         <!-- Schalter für Hell/Dunkel (wie in den Apple-Einstellungen).
@@ -95,6 +99,71 @@
           <h3>Wandern</h3>
           <p>Beim Wandern ist man zu Fuß in der Natur unterwegs – vom gemütlichen Weg durch den Wald bis zur mehrtägigen Tour in den Bergen. Man braucht kaum Ausrüstung: gute Schuhe, etwas zu trinken und los geht's.</p>
           <p>Das Besondere ist das langsame Tempo: Man sieht mehr, kommt zur Ruhe und erarbeitet sich jede Aussicht selbst. Mit anderen zusammen wird aus einer Wanderung schnell ein kleines Abenteuer.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Bereich 3: Termine ===== -->
+    <!-- Der Kalender wird von termine.js gezeichnet.
+         Gespeichert werden die Buchungen in deiner Google-Tabelle
+         (siehe backend/Code.gs und README.md). -->
+    <section id="termine">
+      <h2>Termine</h2>
+      <p>Wähle einen freien Termin aus. Termine gibt es von Montag bis Freitag zwischen 9 und 14 Uhr, jeweils für eine Stunde.</p>
+
+      <div class="kalender">
+        <div class="kalender-kopf">
+          <button type="button" id="woche-zurueck" class="woche-knopf" aria-label="Vorherige Woche">‹</button>
+          <span id="kalender-woche" class="kalender-woche" aria-live="polite"></span>
+          <button type="button" id="woche-vor" class="woche-knopf" aria-label="Nächste Woche">›</button>
+        </div>
+        <p id="kalender-hinweis" class="kalender-hinweis" role="status" hidden></p>
+        <div class="kalender-scroll">
+          <div id="kalender-raster" class="kalender-raster"></div>
+        </div>
+      </div>
+
+      <!-- Fenster zum Buchen (öffnet sich beim Klick auf einen freien Termin) -->
+      <div id="termin-fenster" class="hobby-fenster termin-fenster" popover>
+        <button class="schliessen schliessen-flach" popovertarget="termin-fenster" popovertargetaction="hide" aria-label="Fenster schließen">✕</button>
+        <div class="hobby-text">
+          <h3>Termin buchen</h3>
+          <p class="termin-gewaehlt" id="termin-gewaehlt"></p>
+
+          <form id="termin-formular">
+            <label for="termin-name">Name</label>
+            <input type="text" id="termin-name" name="name" required maxlength="100" autocomplete="name">
+
+            <label for="termin-email">E-Mail</label>
+            <input type="email" id="termin-email" name="email" required maxlength="200" autocomplete="email">
+
+            <!-- Verstecktes Feld gegen Bots – Menschen sehen es nicht -->
+            <div class="versteckt" aria-hidden="true">
+              <label for="termin-webseite">Webseite</label>
+              <input type="text" id="termin-webseite" name="webseite" tabindex="-1" autocomplete="off">
+            </div>
+
+            <label class="einverstanden">
+              <input type="checkbox" name="einverstanden" required>
+              <span>Ich bin einverstanden, dass mein Name und meine E-Mail-Adresse zur Terminvergabe gespeichert werden.</span>
+            </label>
+
+            <p id="termin-meldung" class="termin-meldung" role="alert" hidden></p>
+
+            <button type="submit" class="buchen-knopf">Termin buchen</button>
+
+            <p class="datenschutz">
+              Datenschutz: Name und E-Mail-Adresse werden nur für diesen Termin in einer
+              Google-Tabelle von Jonah Köppe gespeichert und nicht weitergegeben. Du bekommst eine
+              automatische Bestätigungsmail. Für eine Löschung reicht eine Antwort auf diese Mail.
+            </p>
+          </form>
+
+          <div id="termin-erfolg" class="termin-erfolg" hidden>
+            <p><strong>Gebucht!</strong></p>
+            <p id="termin-erfolg-text"></p>
+            <button type="button" class="buchen-knopf" popovertarget="termin-fenster" popovertargetaction="hide">Schließen</button>
+          </div>
         </div>
       </div>
     </section>
