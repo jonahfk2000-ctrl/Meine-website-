@@ -6,7 +6,7 @@
 
 // Hier kommt die Web-App-URL deines Google-Apps-Scripts hinein.
 // Solange sie leer ist, zeigt die Seite „wird gerade eingerichtet“.
-const SKRIPT_URL = "";
+const SKRIPT_URL = "https://script.google.com/macros/s/AKfycbzQYegFT7zmo1kMP5n7KeCocGOBbnjH4Rs4VSU9D-fM-2aGsBYucc-tcnhQX1EX7VQzvQ/exec";
 
 const ERSTE_STUNDE = 9;    // erster Termin 9–10 Uhr
 const LETZTE_STUNDE = 13;  // letzter Termin 13–14 Uhr
